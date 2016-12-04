@@ -1,5 +1,3 @@
-Modelling Problem
-
 You are the proprietor of füber, an on call taxi service.
 
 ·  You have a fleet of cabs at your disposal, and each cab has a location, determined by it’s latitude and longitude.
@@ -9,22 +7,7 @@ You are the proprietor of füber, an on call taxi service.
 ·  If there are no taxis available, you reject the customers request.
 ·  The customer ends the ride at some location. The cab waits around outside the customer’s house,
    and is available to be assigned to another customer.
-Notes:
-
-·  You can build this in any programming language of your choice
-·  We expect good unit tests
-·  Unfortunately, you skipped Geography, and believe the earth is flat.
-   The distance between two points can be calculated by Pythagoras’ theorem.
-·  We don’t expect a front end for this, but try to build an restful API.
-Extra Credit:
-
+   -----------
 ·  When the customer ends the ride, log the total amount the customer owes
 ·  The price is 1 dogecoin per minute, and 2 dogecoin per kilometer. Pink cars cost an additional 5 dogecoin.
 ·  HTML front end showing me all the cars available
-
-         Please Note: What we care mostly about is OO modeling, readability, and simplicity.
-         Do not spend time tacking on databases, dependency injection, ORMs, authentication,
-         admin modules for setting up data, and the like. We do not even require a UI or a web framework.
-         It does not add anything to the review process and sometimes detracts from it.
-         We're happy to see you store all your data in memory.
-         We will, most likely, not even execute your code; only read your code and see whether it communicates its intent
