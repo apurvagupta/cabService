@@ -1,7 +1,9 @@
-package CabService;
+package cabService;
 
 
-public class Cab {
+import java.io.Serializable;
+
+public class Cab implements Serializable {
 
     private Location location;
     private Availability availability;
@@ -31,5 +33,10 @@ public class Cab {
 
     public Availability setAvailability(Availability availability) {
         return this.availability = availability;
+    }
+
+    @Override
+    public String toString(){
+        return locationX() +" "+ locationY()+" "+ carType + " " + availability;
     }
 }

@@ -7,6 +7,8 @@
     <groupId>CabService</groupId>
     <artifactId>CabService</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <packaging>war</packaging>
     <repositories>
         <repository>
             <id>repo.bodar.com</id>
@@ -25,6 +27,16 @@
             <groupId>com.googlecode.totallylazy</groupId>
             <artifactId>totallylazy</artifactId>
             <version>1193</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.2.14.v20151106</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>9.2.14.v20151106</version>
         </dependency>
     </dependencies>
 

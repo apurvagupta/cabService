@@ -1,16 +1,17 @@
-package CabService;
+package cabService;
 
 
 
 import com.googlecode.totallylazy.Predicate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static com.googlecode.totallylazy.Sequences.sequence;
 
-public class Cabs {
+public class Cabs implements Serializable {
     private ArrayList<Cab> cabs = new ArrayList<Cab>();
 
     public Cabs(Cab ...cabPool) {

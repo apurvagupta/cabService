@@ -1,4 +1,4 @@
-package CabService;
+package cabService;
 
 /**
  * Created by apurvagu on 04/12/16.

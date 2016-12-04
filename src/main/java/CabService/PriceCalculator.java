@@ -1,12 +1,14 @@
-package CabService;
+package cabService;
 
 
 public class PriceCalculator {
 
-    private Ride ride;
+    private int PRICE_FOR_TIME =1;
+    private int PRICE_FOR_KM =2;
 
-    public Integer priceForRide(){
-
-        return null;
+    public Double priceForRide(Ride ride){
+        long extraCharge = 0;
+        if(ride.getCarType().equals(CarType.PINK)) extraCharge = 5;
+        return  Math.floor(ride.getEndTime() - ride.getStartTime() * PRICE_FOR_TIME + ride.getDistance()*PRICE_FOR_KM +extraCharge);
     }
 }

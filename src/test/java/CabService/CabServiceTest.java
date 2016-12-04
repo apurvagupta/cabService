@@ -1,12 +1,14 @@
-package CabService;
+package cabService;
 
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Date;
 
-public class CarServiceTest {
+
+public class CabServiceTest {
 
     @Rule
     public ExpectedException expectedException= ExpectedException.none();
@@ -20,8 +22,8 @@ public class CarServiceTest {
         Cab cab1 = new Cab(cabLocation, Availability.FREE, CarType.NORMAL);
         Cabs cabs = new Cabs(cab1);
 
-        CarService carService = new CarService(cabs);
-        Cab cab = carService.assignCab(customer);
+        CabService cabService = new CabService(cabs);
+        Cab cab = cabService.assignCab(customer);
         Assert.assertEquals(cab, cab1);
 
     }
@@ -36,12 +38,12 @@ public class CarServiceTest {
         Cab cab1 = new Cab(cabLocation, Availability.BUSY, CarType.NORMAL);
         Cabs cabs = new Cabs(cab1);
 
-        CarService carService = new CarService(cabs);
+        CabService cabService = new CabService(cabs);
 
         expectedException.expect(Exception.class);
         expectedException.expectMessage("No Cab Available");
 
-        carService.assignCab(customer);
+        cabService.assignCab(customer);
 
 
     }
@@ -60,9 +62,9 @@ public class CarServiceTest {
         Cab cab3 = new Cab(cabLocation3, Availability.FREE, CarType.NORMAL);
         Cabs cabs = new Cabs(cab1, cab2, cab3);
 
-        CarService carService = new CarService(cabs);
+        CabService cabService = new CabService(cabs);
 
-        Cab cab = carService.assignCab(customer);
+        Cab cab = cabService.assignCab(customer);
         Assert.assertEquals(cab, cab2);
     }
 
@@ -83,12 +85,12 @@ public class CarServiceTest {
         Cab cab3 = new Cab(cabLocation3, Availability.FREE, CarType.NORMAL);
         Cabs cabs = new Cabs(cab1, cab2, cab3);
 
-        CarService carService = new CarService(cabs);
+        CabService cabService = new CabService(cabs);
 
-        Cab cabAssigned = carService.assignCab(customer);
+        Cab cabAssigned = cabService.assignCab(customer);
         Assert.assertEquals(cabAssigned, cab2);
 
-        Cab cab = carService.assignCab(customer1);
+        Cab cab = cabService.assignCab(customer1);
         Assert.assertNotEquals(cab,cab2);
         Assert.assertEquals(cab,cab3);
     }
@@ -111,14 +113,14 @@ public class CarServiceTest {
         Cab cab3 = new Cab(cabLocation3, Availability.FREE, CarType.NORMAL);
         Cabs cabs = new Cabs(cab1, cab2, cab3);
 
-        CarService carService = new CarService(cabs);
+        CabService cabService = new CabService(cabs);
 
-        Cab cabAssigned = carService.assignCab(customer);
+        Cab cabAssigned = cabService.assignCab(customer);
         Assert.assertEquals(cabAssigned, cab2);
 
         expectedException.expect(Exception.class);
         expectedException.expectMessage("No Cab Available");
-        carService.assignCab(customer1);
+        cabService.assignCab(customer1);
     }
 
     @Test
@@ -138,12 +140,12 @@ public class CarServiceTest {
         Cab cab3 = new Cab(cabLocation3, Availability.FREE, CarType.PINK);
         Cabs cabs = new Cabs(cab1, cab2, cab3);
 
-        CarService carService = new CarService(cabs);
+        CabService cabService = new CabService(cabs);
 
-        Cab cabAssigned = carService.assignCab(customer);
+        Cab cabAssigned = cabService.assignCab(customer);
         Assert.assertEquals(cabAssigned, cab2);
 
-        Cab cab = carService.assignCab(customer1);
+        Cab cab = cabService.assignCab(customer1);
         Assert.assertNotEquals(cab,cab2);
         Assert.assertEquals(cab,cab3);
     }
@@ -161,15 +163,72 @@ public class CarServiceTest {
         Cab cab1 = new Cab(cabLocation, Availability.FREE, CarType.NORMAL);
         Cabs cabs = new Cabs(cab1);
 
-        CarService carService = new CarService(cabs);
+        CabService cabService = new CabService(cabs);
 
-        Cab cabAssigned = carService.assignCab(customer);
+        Cab cabAssigned = cabService.assignCab(customer);
+        Driver driver = new Driver();
+        driver.startRide(new Ride(new Date().getTime(), customerLocation, cab1.getCarType()));
         Assert.assertEquals(cabAssigned, cab1);
 
-        carService.releaseCab(cabAssigned);
+        Location endLocation = new Location(0.10, 0.11);
+        driver.endRide(cabAssigned, cabService, endLocation);
 
-        Cab cab = carService.assignCab(customer1);
+        Cab cab = cabService.assignCab(customer1);
         Assert.assertEquals(cab,cab1);
+    }
+
+    @Test
+    public void shouldCalculatePriceWhenEndRide() throws Exception {
+        Location customerLocation = new Location(0.03, 0.04);
+
+        Location cabLocation = new Location(0.05, 0.04);
+
+        Customer customer = new Customer(customerLocation, new CarChoice(CarType.NORMAL));
+
+        Cab cab1 = new Cab(cabLocation, Availability.FREE, CarType.NORMAL);
+        Cabs cabs = new Cabs(cab1);
+
+        CabService cabService = new CabService(cabs);
+
+        Cab cabAssigned = cabService.assignCab(customer);
+        Driver driver = new Driver();
+        driver.startRide(new Ride(new Date().getTime(), customerLocation, cab1.getCarType()));
+
+        Assert.assertEquals(cabAssigned, cab1);
+
+        Location endLocation = new Location(0.50, 0.50);
+        Double priceForTrip = driver.endRide(cabAssigned, cabService, endLocation);
+
+
+        Assert.assertEquals(priceForTrip, new Double(1.0));
+
+    }
+
+    @Test
+    public void shouldCalculatePriceWhenRideIsFromPinkCab() throws Exception {
+        Location customerLocation = new Location(0.03, 0.04);
+
+        Location cabLocation = new Location(0.05, 0.04);
+
+        Customer customer = new Customer(customerLocation, new CarChoice(CarType.NORMAL));
+
+        Cab cab1 = new Cab(cabLocation, Availability.FREE, CarType.PINK);
+        Cabs cabs = new Cabs(cab1);
+
+        CabService cabService = new CabService(cabs);
+
+        Cab cabAssigned = cabService.assignCab(customer);
+        Driver driver = new Driver();
+        driver.startRide(new Ride(new Date().getTime(), customerLocation, cab1.getCarType()));
+
+        Assert.assertEquals(cabAssigned, cab1);
+
+        Location endLocation = new Location(0.50, 0.50);
+        Double priceForTrip = driver.endRide(cabAssigned, cabService, endLocation);
+
+
+        Assert.assertEquals(priceForTrip, new Double(6.0));
+
     }
 
 

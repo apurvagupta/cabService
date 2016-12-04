@@ -1,28 +1,26 @@
-package CabService;
+package cabService;
 
-import java.util.Date;
 import java.util.List;
 
-public class CarService {
+public class CabService {
 
     private Cabs cabs;
-    private Ride ride;
 
-    public CarService(Cabs cabs) {
+    public CabService(Cabs cabs) {
         this.cabs = cabs;
     }
 
+    public List<Cab> searchCabs(){
+        return this.cabs.freeCabs();
+    }
+
     public Cab assignCab(Customer customer) throws Exception {
-        Cab shortDistanceCab = findShortDistance(customer, this.cabs.freeCabs());;
+        Cab shortDistanceCab = findShortDistance(customer, this.cabs.freeCabs());
         if(customer.isPinkChoice())
             shortDistanceCab = findShortDistance(customer, this.cabs.pinkAndFreeCabs());
 
         shortDistanceCab.setAvailability(Availability.BUSY);
         return shortDistanceCab;
-    }
-
-    public void releaseCab(Cab cabAssigned){
-        cabAssigned.setAvailability(Availability.FREE);
     }
 
     private Cab findShortDistance(Customer customer, List<Cab> cabs) throws Exception {
@@ -43,7 +41,8 @@ public class CarService {
         }
         return minCab;
     }
-    public void startRide(CarType carType){
-         this.ride = new Ride(new Date().getTime(), carType);
+
+    public Double priceCalculator(Ride ride) {
+        return new PriceCalculator().priceForRide(ride);
     }
 }
